@@ -1,12 +1,11 @@
 from django.http.response import HttpResponseNotFound
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
 from apps.users.models import User
-from apps.users.api.serializers import UserSerializer
+from apps.users.api.serializers import UserSerializer, TestUserSerializer
 
 @api_view(['GET', 'POST'])
 def user_api_view(request):
@@ -22,6 +21,21 @@ def user_api_view(request):
         # objects (table elements). Then, many 
         # parameter is set as True (many=True)
         serializer = UserSerializer(users, many=True)
+
+        #------ Test for understanding serilizers operation
+        #print(TestUserSerializer())
+
+        test_data = {
+            'name':'Usertest',
+            'email': 'usertest@test.com'
+        } 
+
+        test_serializer = TestUserSerializer(data=test_data)
+        if test_serializer.is_valid():
+            print("Validation is passed")
+
+        #---------------------------------------------------
+
         return Response(serializer.data)
     
     # Create
