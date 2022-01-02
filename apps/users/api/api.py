@@ -1,3 +1,4 @@
+from decimal import Context
 from django.http.response import HttpResponseNotFound
 from rest_framework import status
 from rest_framework.response import Response
@@ -26,13 +27,15 @@ def user_api_view(request):
         #print(TestUserSerializer())
 
         test_data = {
-            'name':'Usertest',
-            'email': 'usertest@test.com'
+            'name':'developer',
+            'email': 'developer@test.com'
         } 
 
-        test_serializer = TestUserSerializer(data=test_data)
-        if test_serializer.is_valid():
+        test_user = TestUserSerializer(data=test_data, context=test_data)
+        if test_user.is_valid():
             print("Validation is passed")
+        else:
+            print(test_user.errors)
 
         #---------------------------------------------------
 
