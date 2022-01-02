@@ -33,3 +33,6 @@ class TestUserSerializer(serializers.Serializer):
         #print('General validate')
         return data
 
+    def create(self, validated_data):
+        return User.objects.create(**validated_data)
+    
