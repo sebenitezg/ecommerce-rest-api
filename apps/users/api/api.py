@@ -22,24 +22,6 @@ def user_api_view(request):
         # objects (table elements). Then, many 
         # parameter is set as True (many=True)
         serializer = UserSerializer(users, many=True)
-
-        #------ Test for understanding serilizers operation
-        #print(TestUserSerializer())
-
-        test_data = {
-            'name':'developer',
-            'email': 'dev@test.com'
-        } 
-
-        test_user = TestUserSerializer(data=test_data, context=test_data)
-        if test_user.is_valid():
-            user_instance = test_user.save()
-            print(user_instance)
-        else:
-            print(test_user.errors)
-
-        #---------------------------------------------------
-
         return Response(serializer.data)
     
     # Create
@@ -73,12 +55,19 @@ def user_detail_api_view(request, pk):
 
         # Update
         elif request.method == 'PUT':
+            """
             serializer = UserSerializer(user, data = request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+            """
+            serializer = TestUserSerializer(user, data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
         # Delete
         elif request.method == 'DELETE':
             user.delete()

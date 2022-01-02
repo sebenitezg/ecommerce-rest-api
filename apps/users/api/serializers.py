@@ -21,9 +21,7 @@ class TestUserSerializer(serializers.Serializer):
     def validate_email(self, value):
         # Custom validation
         if 'test' not in value:
-            raise serializers.ValidationError('Error, test must be in the e-mail')
-        if self.validate_name(self.context['name']) in value:
-            raise serializers.ValidationError('Error, e-mail cannot contain the name')     
+            raise serializers.ValidationError('Error, test must be in the e-mail') 
         print(value)
         return value
 
@@ -36,3 +34,9 @@ class TestUserSerializer(serializers.Serializer):
     def create(self, validated_data):
         return User.objects.create(**validated_data)
     
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.save()
+
+        return instance
