@@ -64,6 +64,8 @@ def user_detail_api_view(request, pk):
             """
             serializer = TestUserSerializer(user, data = request.data)
             if serializer.is_valid():
+                # This save execute a set of methods
+                # of the serializer class
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

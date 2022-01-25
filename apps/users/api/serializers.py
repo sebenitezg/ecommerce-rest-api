@@ -37,6 +37,10 @@ class TestUserSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
         instance.email = validated_data.get('email', instance.email)
+        # This save execute a set of methods
+        # of the model class
         instance.save()
 
         return instance
+
+    
