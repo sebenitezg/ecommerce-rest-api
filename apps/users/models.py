@@ -33,6 +33,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default = True)
     is_staff = models.BooleanField(default = False)
     historical = HistoricalRecords()
+    
     objects = UserManager()
 
     class Meta:
@@ -44,3 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f'{self.name} {self.last_name}'
+
+    # def save(self):
+    #     print(type(self))
+    #     print(self)
