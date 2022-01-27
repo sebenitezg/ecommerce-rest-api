@@ -7,43 +7,30 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
-class TestUserSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length = 200)
-    email = serializers.EmailField()
-
-    def validate_name(self, value):
-        # Custom validation
-        if 'admin' in value:
-            raise serializers.ValidationError('Error, a user with this name cannot exist')
-        print(value)
-        return value
-
-    def validate_email(self, value):
-        # Custom validation
-        if 'test' not in value:
-            raise serializers.ValidationError('Error, test must be in the e-mail') 
-        print(value)
-        return value
-
-    def validate(self, data):
-        #if data['name'] in data['email']:
-        #    raise serializers.ValidationError('The email cannot contain the name')
-        #print('General validate')
-        return data
-
     def create(self, validated_data):
-        return User.objects.create(**validated_data)
-    
+        user = User(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
+
     def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.email = validated_data.get('email', instance.email)
-        # This save execute a set of methods
-        # of the model class
-        instance.save()
+        user = super().update(instance, validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
-        return instance
+class UserListSerializer(serializers.ModelSerializer):
 
-    # def save(self):
-    #     print(self)
+    class Meta:
+        model = User
 
-    
+    def to_representation(self, instance):
+        # data = super().to_representation(instance)
+        # print(data)
+        return {
+            'id':instance['id'],
+            'username':instance['username'],
+            'email':instance['email'],
+            'password':instance['password']
+        }

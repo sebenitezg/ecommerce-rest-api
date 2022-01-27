@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
 from apps.users.models import User
-from apps.users.api.serializers import UserSerializer, TestUserSerializer
+from apps.users.api.serializers import UserSerializer, UserListSerializer
 
 @api_view(['GET', 'POST'])
 def user_api_view(request):
@@ -16,12 +16,12 @@ def user_api_view(request):
     # List
     if request.method == 'GET':
         # Queryset
-        users = User.objects.all()
+        users = User.objects.all().values('id', 'username', 'email', 'password')
         # Here, an object list is serialized, i.e., 
         # the object is a list of two or more
         # objects (table elements). Then, many 
         # parameter is set as True (many=True)
-        serializer = UserSerializer(users, many=True)
+        serializer = UserListSerializer(users, many=True)
         return Response(serializer.data)
     
     # Create
@@ -62,7 +62,7 @@ def user_detail_api_view(request, pk):
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             """
-            serializer = TestUserSerializer(user, data = request.data)
+            serializer = UserSerializer(user, data = request.data)
             if serializer.is_valid():
                 # This save execute a set of methods
                 # of the serializer class
