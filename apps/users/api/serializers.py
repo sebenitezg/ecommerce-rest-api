@@ -18,7 +18,9 @@ class UserSerializer(serializers.ModelSerializer):
         user = super().update(instance, validated_data)
         user.set_password(validated_data['password'])
         user.save()
+        
         return user
+
 
 class UserListSerializer(serializers.ModelSerializer):
 
@@ -28,9 +30,18 @@ class UserListSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         # data = super().to_representation(instance)
         # print(data)
+        # print(type(instance))
         return {
             'id':instance['id'],
             'username':instance['username'],
             'email':instance['email'],
             'password':instance['password']
         }
+        
+        # print(type(instance))
+        # return {
+        #     'id':instance.id,
+        #     'username':instance.username,
+        #     'email':instance.email,
+        #     'password':instance.password
+        # }

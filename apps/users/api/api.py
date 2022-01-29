@@ -17,6 +17,7 @@ def user_api_view(request):
     if request.method == 'GET':
         # Queryset
         users = User.objects.all().values('id', 'username', 'email', 'password')
+        # users = User.objects.all()
         # Here, an object list is serialized, i.e., 
         # the object is a list of two or more
         # objects (table elements). Then, many 
